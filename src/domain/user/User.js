@@ -1,18 +1,21 @@
 const { attributes } = require('structure');
+const mongoose = require('mongoose');
 
-const User = attributes({
-  id: Number,
+const USERS = new mongoose.Schema({
   name: {
-    type: String,
-    required: true
+      type: String,
+      required: true,
   },
-  age: Number
-})(class User {
-  isLegal() {
-    return this.age >= User.MIN_LEGAL_AGE;
+  createdAt:{
+      type: Number,
+      default: Date.now()
+  },
+  updatedAt:{
+      type: Number,
+      default: Date.now()
   }
 });
 
-User.MIN_LEGAL_AGE = 21;
+const UserModel = mongoose.model('Users', USERS);
 
-module.exports = User;
+module.exports = UserModel;

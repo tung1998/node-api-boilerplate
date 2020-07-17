@@ -20,11 +20,15 @@ const errorHandler = require('./interfaces/http/errors/errorHandler');
 const devErrorHandler = require('./interfaces/http/errors/devErrorHandler');
 const swaggerMiddleware = require('./interfaces/http/swagger/swaggerMiddleware');
 
+const UserModel= require('./domain/user/User');
+
 const logger = require('./infra/logging/logger');
-const SequelizeUsersRepository = require('./infra/user/SequelizeUsersRepository');
-const { database, User: UserModel } = require('./infra/database/models');
+const database = require('./infra/database/models');
+const UsersRepository = require('./infra/database/models/User');
 
 const container = createContainer();
+
+// console.log(JSON.stringify(UserModel, ))
 
 // System
 container
@@ -53,7 +57,7 @@ container
 
 // Repositories
 container.register({
-  usersRepository: asClass(SequelizeUsersRepository).singleton()
+  usersRepository: asClass(UsersRepository).singleton()
 });
 
 // Database

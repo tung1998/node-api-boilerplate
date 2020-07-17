@@ -25,7 +25,7 @@ const UsersController = {
       .on(SUCCESS, (users) => {
         res
           .status(Status.OK)
-          .json(users.map(userSerializer.serialize));
+          .send(users);
       })
       .on(ERROR, next);
 

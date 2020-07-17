@@ -1,15 +1,27 @@
 'use strict';
+class UsersRepository {
+  constructor({ UserModel }) {
+    this.UserModel = UserModel;
+  }
 
-module.exports = function(sequelize, DataTypes) {
-  const User = sequelize.define('user', {
-    name: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate() {
-        // associations can be defined here
-      }
-    }
-  });
+  async getAll() {
+    return this.UserModel.find()
+  }
+  async getById(id) {
+    return
+  }
+  async count(data) {
+    return
+  }
+  async add(user) {
+    return this.UserModel.create(user)
+  }
+  async update(data) {
+    return
+  }
+  async remove(data) {
+    return
+  }
+}
 
-  return User;
-};
+module.exports = UsersRepository

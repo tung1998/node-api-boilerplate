@@ -21,6 +21,8 @@ function loadDbConfig() {
   }
 
   if(fs.existsSync(path.join(__dirname, './database.js'))) {
-    return require('./database')[ENV];
+    let databaseConfig = require('./database')[ENV]
+    console.log(databaseConfig)
+    return `${databaseConfig.dialect}://${databaseConfig.host}:${databaseConfig.port}/${databaseConfig.database}`
   }
 }

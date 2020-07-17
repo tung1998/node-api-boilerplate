@@ -1,14 +1,14 @@
-const { ModelsLoader } = require('../../../infra/sequelize');
-const Sequelize = require('sequelize');
+const mongoose = require('mongoose')
 const { db: config } = require('../../../../config');
-
 if(config) {
-  const sequelize = new Sequelize(config);
-
-  module.exports = ModelsLoader.load({
-    sequelize,
-    baseFolder: __dirname
-  });
+  module.exports = {
+    start(){
+      mongoose.connect(config,{
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+    }
+  } 
 } else {
   /* eslint-disable no-console */
   console.error('Database configuration not found, disabling database.');
