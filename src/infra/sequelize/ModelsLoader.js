@@ -2,13 +2,13 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
-  load({ sequelize, baseFolder, indexFile = 'index.js' }) {
+  load({ sequelize, baseFolder}) {
     const loaded = {};
 
     fs
       .readdirSync(baseFolder)
       .filter((file) => {
-        return (file.indexOf('.') !== 0) && (file !== indexFile) && (file.slice(-3) === '.js');
+        return (file.indexOf('.') !== 0) && (file.slice(-3) === '.js');
       })
       .forEach((file) => {
         const model = sequelize['import'](path.join(baseFolder, file));
@@ -21,9 +21,6 @@ module.exports = {
         loaded[modelName].associate(loaded);
       }
     });
-
-    loaded.database = sequelize;
-
-    return loaded;
+    return sequelize;
   }
 };

@@ -12,15 +12,20 @@ const config = Object.assign({
   env: ENV,
   db: dbConfig
 }, envConfig);
-
 module.exports = config;
 
 function loadDbConfig() {
-  if(process.env.DATABASE_URL) {
-    return process.env.DATABASE_URL;
-  }
+  let dbConfig = {}
+  if(process.env.MYSQL_DATABASE_URL)
+    dbConfig.mysql=process.env.MYSQL_DATABASE_URL
+  else if(fs.existsSync(path.join(__dirname, './database.js')))
+    dbConfig.mysql=require('./database').mysql[ENV];
 
-  if(fs.existsSync(path.join(__dirname, './database.js'))) {
-    return require('./database')[ENV];
+  if(process.env.MONGODB_DATABASE_URL) {
+    dbConfig.mongodb=process.env.MONGODB_DATABASE_URL
+  }else if(fs.existsSync(path.join(__dirname, './database.js'))){
+    databaseConfig = require('./database').mongodb[ENV]
+    dbConfig.mongodb=`${databaseConfig.dialect}://${databaseConfig.host}:${databaseConfig.port}/${databaseConfig.database}`
   }
+  return dbConfig;
 }

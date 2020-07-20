@@ -1,8 +1,8 @@
 const UserMapper = require('./SequelizeUserMapper');
 
 class SequelizeUsersRepository {
-  constructor({ UserModel }) {
-    this.UserModel = UserModel;
+  constructor({ mysqlModel }) {
+    this.UserModel = mysqlModel.user;
   }
 
   async getAll(...args) {
