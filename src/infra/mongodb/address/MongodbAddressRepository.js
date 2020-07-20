@@ -6,54 +6,46 @@ class MongodbAddressRepository {
   }
 
   async getAll(...args) {
-    console.log(0, this.AddressModel);
-
-    this.AddressModel.find().then(result=>{
-      console.log(1, result)
-    }
-    ).catch(error=>{
-      console.log(2, error);
-    })
-    // return await this.AddressModel.find()
+    return await this.AddressModel.find()
   }
 
   async getById(id) {
-    const user = await this._getById(id);
+    const address = await this._getById(id);
 
-    return UserMapper.toEntity(user);
+    return this.AddressModel.find({
+
+    })
   }
 
-  async add(user) {
-    const { valid, errors } = user.validate();
-
+  async add(address) {
+    const { valid, errors } = address.validate();
     if(!valid) {
       const error = new Error('ValidationError');
       error.details = errors;
-
+      
       throw error;
     }
-
-    const newUser = await this.UserModel.create(UserMapper.toDatabase(user));
-    return UserMapper.toEntity(newUser);
+    const newAddress = await this.AddressModel.create(address.toJSON());
+    return newAddress
   }
 
   async remove(id) {
-    const user = await this._getById(id);
+    const address = await this._getById(id);
 
-    await user.destroy();
+    await address.destroy();
     return;
   }
 
   async update(id, newData) {
-    const user = await this._getById(id);
+    const address = await this._getById(id);
 
-    const transaction = await this.UserModel.sequelize.transaction();
+    const transaction = await this.AddressModel.sequelize.transaction();
 
     try {
-      const updatedUser = await user.update(newData, { transaction });
-      const userEntity = UserMapper.toEntity(updatedUser);
+      const updatedAddress = await address.update(newData, { transaction });
+      const addressEntity = AddressMapper.toEntity(updatedAddress);
 
-      const { valid, errors } = userEntity.validate();
+      const { valid, errors } = addressEntity.validate();
 
       if(!valid) {
         const error = new Error('ValidationError');
@@ -64,7 +56,7 @@ class MongodbAddressRepository {
 
       await transaction.commit();
 
-      return userEntity;
+      return addressEntity;
     } catch(error) {
       await transaction.rollback();
 
@@ -73,18 +65,18 @@ class MongodbAddressRepository {
   }
 
   async count() {
-    return await this.UserModel.count();
+    return await this.AddressModel.count();
   }
 
   // Private
 
   async _getById(id) {
     try {
-      return await this.UserModel.findById(id, { rejectOnEmpty: true });
+      return await this.AddressModel.findById(id, { rejectOnEmpty: true });
     } catch(error) {
       if(error.name === 'SequelizeEmptyResultError') {
         const notFoundError = new Error('NotFoundError');
-        notFoundError.details = `User with id ${id} can't be found.`;
+        notFoundError.details = `Address with id ${id} can't be found.`;
 
         throw notFoundError;
       }

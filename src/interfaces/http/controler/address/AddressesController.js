@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { inject } = require('awilix-express');
 const Status = require('http-status');
-const { GetAllAddresss } = require('../../../../app/address');
+// const { GetAllAddresss } = require('../../../../app/address');
 
 const AddresssController = {
   get router() {
@@ -63,7 +63,7 @@ const AddresssController = {
       .on(SUCCESS, (address) => {
         res
           .status(Status.CREATED)
-          .json(addressSerializer.serialize(address));
+          .send(address);
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({

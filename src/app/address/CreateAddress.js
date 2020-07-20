@@ -1,21 +1,21 @@
 const Operation = require('../Operation');
-const User = require('../../domain/user/User');
+const Address = require('../../domain/address/Address');
 
-class CreateUser extends Operation {
-  constructor({ usersRepository }) {
+class CreateAddress extends Operation {
+  constructor({ addressesRepository }) {
     super();
-    this.usersRepository = usersRepository;
+    this.addressesRepository = addressesRepository;
   }
 
-  async execute(userData) {
+  async execute(addressData) {
     const { SUCCESS, ERROR, VALIDATION_ERROR } = this.outputs;
 
-    const user = new User(userData);
+    const address = new Address(addressData);
 
     try {
-      const newUser = await this.usersRepository.add(user);
+      const newAddress = await this.addressesRepository.add(address);
 
-      this.emit(SUCCESS, newUser);
+      this.emit(SUCCESS, newAddress);
     } catch(error) {
       if(error.message === 'ValidationError') {
         return this.emit(VALIDATION_ERROR, error);
@@ -26,6 +26,6 @@ class CreateUser extends Operation {
   }
 }
 
-CreateUser.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR']);
+CreateAddress.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR']);
 
-module.exports = CreateUser;
+module.exports = CreateAddress;

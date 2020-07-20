@@ -15,7 +15,7 @@ class Application {
       console.log("mysql conected")
     }
     if (this.database && this.database.mongodb) {
-      await this.database.mongodb
+      await this.database.mongodb.conect()
       console.log("mongodb conected")
     }
 

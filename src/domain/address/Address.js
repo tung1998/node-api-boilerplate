@@ -1,12 +1,15 @@
 const { attributes } = require('structure');
 
 const Address = attributes({
-  _id: Object,
   userID: {
     type: String,
     required: true
   },
-  address: Array
+  userInfo: {
+    required: true,
+    type: Array,
+    itemType: Object,
+  }
 })(class Address {
   
 });

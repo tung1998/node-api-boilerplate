@@ -13,8 +13,9 @@ const ADDRESS = new mongoose.Schema({
         type: Number,
         default: Date.now()
     },
-    updatedAt: {
+    userInfo: {
         type: Array,
+        default:[]
     }
 });
 
