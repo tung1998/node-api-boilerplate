@@ -11,7 +11,16 @@ const {
   DeleteUser
 } = require('./app/user');
 
-const UserSerializer = require('./interfaces/http/user/UserSerializer');
+const {
+  CreateAddress,
+  GetAllAddresses,
+  GetAddress,
+  UpdateAddress,
+  DeleteAddress
+} = require('./app/address');
+
+const UserSerializer = require('./interfaces/http/controler/user/UserSerializer');
+const AddressSerializer = require('./interfaces/http/controler/address/AddressSerializer');
 
 const Server = require('./interfaces/http/Server');
 const router = require('./interfaces/http/router');
@@ -21,10 +30,14 @@ const devErrorHandler = require('./interfaces/http/errors/devErrorHandler');
 const swaggerMiddleware = require('./interfaces/http/swagger/swaggerMiddleware');
 
 const logger = require('./infra/logging/logger');
-const SequelizeUsersRepository = require('./infra/user/SequelizeUsersRepository');
-const database = require('./infra/database/models');
 
+const SequelizeUsersRepository = require('./infra/sequelize/user/SequelizeUsersRepository');
+
+const MongodbAddressRepository = require('./infra/mongodb/address/MongodbAddressRepository');
+
+const database = require('./infra/database/models');
 const container = createContainer();
+
 // System
 container
   .register({
@@ -50,15 +63,21 @@ container
     swaggerMiddleware: asValue([swaggerMiddleware])
   });
 
-// Repositories
+// Sequelize Repositories
 container.register({
   usersRepository: asClass(SequelizeUsersRepository).singleton()
+});
+
+// Mongodb Repositories
+container.register({
+  addressesRepository: asClass(MongodbAddressRepository).singleton()
 });
 
 // Database
 container.register({
   database: asValue(database),
-  mysqlModel: asValue(database.mysql.models)
+  mysqlModel: asValue(database.mysql.models),
+  mongodbModel: asValue(database.mongodb.models)
 });
 
 // Operations
@@ -70,9 +89,18 @@ container.register({
   deleteUser: asClass(DeleteUser)
 });
 
+container.register({
+  createAddress: asClass(CreateAddress),
+  getAllAddresses: asClass(GetAllAddresses),
+  getAddress: asClass(GetAddress),
+  updateAddress: asClass(UpdateAddress),
+  deleteAddress: asClass(DeleteAddress)
+});
+
 // Serializers
 container.register({
-  userSerializer: asValue(UserSerializer)
+  userSerializer: asValue(UserSerializer),
+  addressSerializer: asValue(AddressSerializer)
 });
 
 module.exports = container;
