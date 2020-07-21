@@ -6,13 +6,11 @@ class MongodbAddressRepository {
   }
 
   async getAll(...args) {
-    console.log(await this.AddressModel.find())
     return await this.AddressModel.find()
   }
 
   async getById(id) {
     const address = await this._getById(id);
-    console.log(address);
     return address
   }
 
@@ -60,10 +58,7 @@ class MongodbAddressRepository {
   async addUserAddress(userID, newData) {
 
     try {
-
-      console.log(userID, newData)
       const updatedAddress = await this.AddressModel.update({userID}, {$push:{userInfo:newData}});
-
       return updatedAddress;
     } catch (error) {
       throw error;

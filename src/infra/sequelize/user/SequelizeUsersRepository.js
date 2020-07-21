@@ -19,7 +19,6 @@ class SequelizeUsersRepository {
 
   async add(user) {
     const { valid, errors } = user.validate();
-    console.log(UserMapper.toDatabase(user))
     if(!valid) {
       const error = new Error('ValidationError');
       error.details = errors;
