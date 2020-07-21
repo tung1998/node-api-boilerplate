@@ -1,17 +1,17 @@
 const Operation = require('../Operation');
 
-class GetUser extends Operation {
-  constructor({ usersRepository }) {
+class GetAddress extends Operation {
+  constructor({ addressesRepository }) {
     super();
-    this.usersRepository = usersRepository;
+    this.addressesRepository = addressesRepository;
   }
 
-  async execute(userId) {
+  async execute(addressId) {
     const { SUCCESS, NOT_FOUND } = this.outputs;
 
     try {
-      const user = await this.usersRepository.getById(userId);
-      this.emit(SUCCESS, user);
+      const address = await this.addressesRepository.getById(addressId);
+      this.emit(SUCCESS, address);
     } catch(error) {
       this.emit(NOT_FOUND, {
         type: error.message,
@@ -21,6 +21,6 @@ class GetUser extends Operation {
   }
 }
 
-GetUser.setOutputs(['SUCCESS', 'ERROR', 'NOT_FOUND']);
+GetAddress.setOutputs(['SUCCESS', 'ERROR', 'NOT_FOUND']);
 
-module.exports = GetUser;
+module.exports = GetAddress;

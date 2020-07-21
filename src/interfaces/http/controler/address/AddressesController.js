@@ -13,6 +13,7 @@ const AddresssController = {
     router.get('/:id', inject('getAddress'), this.show);
     router.post('/', inject('createAddress'), this.create);
     router.put('/:id', inject('updateAddress'), this.update);
+    router.put('/addUserAddress/:id', inject('addUserAddress'), this.addUserAddress);
     router.delete('/:id', inject('deleteAddress'), this.delete);
 
     return router;
@@ -26,7 +27,7 @@ const AddresssController = {
       .on(SUCCESS, (addresses) => {
         res
           .status(Status.OK)
-          .send(addresses);
+          .json(addresses);
       })
       .on(ERROR, next);
 
@@ -42,7 +43,7 @@ const AddresssController = {
       .on(SUCCESS, (address) => {
         res
           .status(Status.OK)
-          .json(addressSerializer.serialize(address));
+          .json(address);
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({
@@ -52,7 +53,7 @@ const AddresssController = {
       })
       .on(ERROR, next);
 
-    getAddress.execute(Number(req.params.id));
+    getAddress.execute(req.params.id);
   },
 
   create(req, res, next) {
@@ -100,7 +101,7 @@ const AddresssController = {
       })
       .on(ERROR, next);
 
-    updateAddress.execute(Number(req.params.id), req.body);
+    updateAddress.execute(req.params.id, req.body);
   },
 
   delete(req, res, next) {
@@ -119,7 +120,26 @@ const AddresssController = {
       })
       .on(ERROR, next);
 
-    deleteAddress.execute(Number(req.params.id));
+    deleteAddress.execute(req.params.id);
+  },
+  
+  addUserAddress(req, res, next) {
+    const { addUserAddress } = req;
+    const { SUCCESS, ERROR, NOT_FOUND } = addUserAddress.outputs;
+
+    addUserAddress
+      .on(SUCCESS, () => {
+        res.status(Status.ACCEPTED).end();
+      })
+      .on(NOT_FOUND, (error) => {
+        res.status(Status.NOT_FOUND).json({
+          type: 'NotFoundError',
+          details: error.details
+        });
+      })
+      .on(ERROR, next);
+
+      addUserAddress.execute(req.params.id, req.body);
   }
 };
 

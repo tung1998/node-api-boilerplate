@@ -7,13 +7,12 @@ class UpdateAddress extends Operation {
     this.addressesRepository = addressesRepository;
   }
 
-  async execute(addressId, addressData) {
+  async execute(userID, addressData) {
     const { SUCCESS, NOT_FOUND, VALIDATION_ERROR, ERROR } = this.outputs;
 
-    const address = new Address(addressData);
     try {
-      await this.addressesRepository.update({ _id: addressId }, address);
-      this.emit(SUCCESS, address);
+      let newUserAddressData = await this.addressesRepository.addUserAddress(userID, addressData);
+      this.emit(SUCCESS, newUserAddressData);
     } catch (error) {
       switch (error.message) {
         case 'ValidationError':

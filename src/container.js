@@ -16,7 +16,8 @@ const {
   GetAllAddresses,
   GetAddress,
   UpdateAddress,
-  DeleteAddress
+  DeleteAddress,
+  AddUserAddress
 } = require('./app/address');
 
 const UserSerializer = require('./interfaces/http/controler/user/UserSerializer');
@@ -94,7 +95,8 @@ container.register({
   getAllAddresses: asClass(GetAllAddresses),
   getAddress: asClass(GetAddress),
   updateAddress: asClass(UpdateAddress),
-  deleteAddress: asClass(DeleteAddress)
+  deleteAddress: asClass(DeleteAddress),
+  addUserAddress: asClass(AddUserAddress)
 });
 
 // Serializers

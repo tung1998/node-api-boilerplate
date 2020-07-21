@@ -11,7 +11,7 @@ class GetAllAddresses extends Operation {
 
     try {
       const addresses = await this.addressesRepository.getAll({
-        attributes: ['id', 'name']
+        attributes: ['id', 'name',]
       });
 
       this.emit(SUCCESS, addresses);

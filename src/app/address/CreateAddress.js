@@ -16,8 +16,8 @@ class CreateAddress extends Operation {
       const newAddress = await this.addressesRepository.add(address);
 
       this.emit(SUCCESS, newAddress);
-    } catch(error) {
-      if(error.message === 'ValidationError') {
+    } catch (error) {
+      if (error.message === 'ValidationError') {
         return this.emit(VALIDATION_ERROR, error);
       }
 

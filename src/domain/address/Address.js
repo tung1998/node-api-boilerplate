@@ -6,7 +6,6 @@ const Address = attributes({
     required: true
   },
   userInfo: {
-    required: true,
     type: Array,
     itemType: Object,
   }

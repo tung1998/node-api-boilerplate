@@ -6,6 +6,10 @@ const User = attributes({
     type: String,
     required: true
   },
+  pass: {
+    type: String,
+    required: true
+  },
   age: Number
 })(class User {
   isLegal() {
