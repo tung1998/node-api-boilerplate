@@ -22,10 +22,10 @@ const UsersController = {
     const { SUCCESS, ERROR } = getAllUsers.outputs;
 
     getAllUsers
-      .on(SUCCESS, (users) => {
+      .on(SUCCESS, (data) => {
         res
           .status(Status.OK)
-          .json(users.map(userSerializer.serialize));
+          .json(data);
       })
       .on(ERROR, next);
 
@@ -59,10 +59,10 @@ const UsersController = {
     const { SUCCESS, ERROR, VALIDATION_ERROR } = createUser.outputs;
 
     createUser
-      .on(SUCCESS, (user) => {
+      .on(SUCCESS, (data) => {
         res
           .status(Status.CREATED)
-          .json(userSerializer.serialize(user));
+          .json(data);
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({
@@ -80,10 +80,10 @@ const UsersController = {
     const { SUCCESS, ERROR, VALIDATION_ERROR, NOT_FOUND } = updateUser.outputs;
 
     updateUser
-      .on(SUCCESS, (user) => {
+      .on(SUCCESS, (data) => {
         res
           .status(Status.ACCEPTED)
-          .json(userSerializer.serialize(user));
+          .json(data);
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({

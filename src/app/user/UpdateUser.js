@@ -12,8 +12,8 @@ class UpdateUser extends Operation {
     } = this.outputs;
 
     try {
-      const user = await this.usersRepository.update(userId, userData);
-      this.emit(SUCCESS, user);
+      const data = await this.usersRepository.update(userId, userData);
+      this.emit(SUCCESS, data);
     } catch(error) {
       switch(error.message) {
       case 'ValidationError':

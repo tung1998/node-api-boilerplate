@@ -14,18 +14,6 @@ class MongodbAddressRepository {
     return address
   }
 
-  async add(address) {
-    const { valid, errors } = address.validate();
-    if (!valid) {
-      const error = new Error('ValidationError');
-      error.details = errors;
-
-      throw error;
-    }
-    const newAddress = await this.AddressModel.create(address.toJSON());
-    return newAddress
-  }
-
   async remove(id) {
     await this.AddressModel.deleteOne({_id: id});
     return ;

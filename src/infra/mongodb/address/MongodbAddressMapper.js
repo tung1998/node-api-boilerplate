@@ -1,16 +1,15 @@
 const Address = require('../../../domain/address/Address');
 
 const MongodbAddressMapper = {
-  toEntity({ dataValues }) {
-    const { _id, userID, address} = dataValues;
-
-    return new Address({ _id, userID, address });
+  toEntity(dataValues) {
+    const { _id, userID, userInfo} = dataValues;
+    return new Address({ _id, userID, userInfo });
   },
 
   toDatabase(survivor) {
-    const { userID } = survivor;
+    const { userID, userInfo } = survivor;
 
-    return { userID, address };
+    return { userID, userInfo };
   }
 };
 
