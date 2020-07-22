@@ -2,6 +2,7 @@ const { SequelizeModelsLoader } = require('../../../infra/sequelize');
 const { MongodbModelsLoader } = require('../../../infra/mongodb');
 const Sequelize = require('sequelize');
 const mongoose = require('mongoose')
+mongoose.Promise = Promise;
 const { db: config } = require('../../../../config');
 
 if (config) {
@@ -30,8 +31,7 @@ function conectMongodb() {
   let mongodb = {}
   mongodb.conect = function(){
     return mongoose.connect(config.mongodb, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
+      useMongoClient: true
     })
   } 
   return  MongodbModelsLoader.load({
