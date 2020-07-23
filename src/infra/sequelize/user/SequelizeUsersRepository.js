@@ -49,8 +49,10 @@ class SequelizeUsersRepository {
     const user = await this._getById(id);
     const transaction = await this.UserModel.sequelize.transaction();
     try {
-      const newUser = new User({ id: Number(id), ...userData })
+      let oldUser = user.dataValues
+      const newUser = new User({...oldUser,...userData})
       const address = new Address({ userID: id, ...userData })
+      console.log(oldUser,userData,{...oldUser,...userData}, newUser);
       await user.update(UserMapper.toDatabase(newUser), { transaction });
       let { valid, errors } = newUser.validate();
       if (!valid) {
